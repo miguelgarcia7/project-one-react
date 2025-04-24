@@ -42,7 +42,6 @@ Thumbs.db
 *.mov
 *.wmv
 
-
 /.phpunit.cache
 /node_modules
 /public/build

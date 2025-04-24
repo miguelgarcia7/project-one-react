@@ -20,7 +20,7 @@ export function PuppiesForm( {
                         id: puppies.length + 1,
                         name: formData.get('name') as string,
                         vibe: formData.get('trait') as string,
-                        imagePath: `/images/${puppies.length + 1}.jpg`
+                        imagePath: `/images/${Math.floor(Math.random() * 16) + 7}.jpg`
                     }
                     setPuppies([...puppies, newPuppy]);
                 }}
@@ -30,6 +30,7 @@ export function PuppiesForm( {
                     <fieldset className="flex w-full flex-col gap-1">
                         <label htmlFor="name">Name</label>
                         <input
+                            required
                             className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                             id="name"
                             type="text"
@@ -39,6 +40,7 @@ export function PuppiesForm( {
                     <fieldset className="flex w-full flex-col gap-1">
                         <label htmlFor="trait">Personality trait</label>
                         <input
+                            required
                             className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                             id="trait"
                             type="text"
@@ -67,11 +69,16 @@ export function PuppiesForm( {
 function SubmitButton() {
     const status = useFormStatus();
     return (
-        <button
-            className="mt-4 inline-block rounded bg-cyan-300 px-4 py-2 font-medium text-cyan-900 hover:bg-cyan-200 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-            type="submit"
-        >
-            { status.pending ? "Adding puppy..." : "Add puppy"}
-        </button>
+        <>
+            <button
+                className="mt-4 inline-block rounded bg-cyan-300 px-4 py-2 font-medium text-cyan-900 hover:bg-cyan-200 focus:ring-2 focus:ring-cyan-500 focus:outline-none disabled:bg-slate-200 disabled:cursor-not-allowed"
+                type="submit"
+                disabled={status.pending}
+            >
+                { status.pending ? `Adding ${status?.data?.get("name") || "puppy"}...` : "Add puppy"}
+            </button>
+            <pre>{JSON.stringify(status, null, 2)}</pre>
+        </>
+
     )
 }
